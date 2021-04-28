@@ -1,6 +1,6 @@
-# GOBARBER BACKEND V2
+# RENTX BACKEND V2
 
-barber shop scheduling system backend 💚🚀🔥
+rentx app make with express 💚🚀🔥
 
 <p align='center'>
 <img src='https://user-images.githubusercontent.com/52014318/91243623-c64b1300-e720-11ea-8e1f-eaaf01bf3e03.png' height='400' />

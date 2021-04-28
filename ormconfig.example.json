@@ -6,7 +6,7 @@
     "port": 3306,
     "username": "root",
     "password": "12345",
-    "database": "gobarber",
+    "database": "rentx",
     "entities": ["./src/modules/**/infra/typeorm/entities/*.ts"],
     "migrations": ["./src/shared/infra/typeorm/migrations/*.ts"],
     "cli": {
@@ -18,7 +18,7 @@
     "type": "mongodb",
     "host": "localhost",
     "port": 27017,
-    "database": "gobarber",
+    "database": "rentx",
     "useUnifiedTopology": true,
     "entities": ["./src/modules/**/infra/typeorm/schemas/*.ts"]
   }
