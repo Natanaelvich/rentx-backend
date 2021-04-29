@@ -1,5 +1,5 @@
-import { Category } from '../../entities/Categorie';
-import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
+import { Category } from '@modules/cars/entities/Categorie';
+import { ICategoriesRepository } from '@modules/cars/repositories/ICategoriesRepository';
 
 class ListCategoriesUseCase {
   constructor(private categoriesRepository: ICategoriesRepository) {}
@@ -9,4 +9,5 @@ class ListCategoriesUseCase {
     return categories;
   }
 }
+
 export { ListCategoriesUseCase };
