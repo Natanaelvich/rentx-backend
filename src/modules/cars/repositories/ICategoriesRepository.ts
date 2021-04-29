@@ -1,11 +1,11 @@
-import { Category } from "../entities/Category";
+import { Category } from '../entities/Categorie';
 
 interface ICreateCategoryDTO {
   name: string;
   description: string;
 }
 interface ICategoriesRepository {
-  findByName(name: string): Category;
+  findByName(name: string): Category | undefined;
   list(): Category[];
   create({ name, description }: ICreateCategoryDTO): void;
 }
