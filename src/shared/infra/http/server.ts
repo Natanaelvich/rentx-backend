@@ -4,6 +4,7 @@ import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 
@@ -13,10 +14,12 @@ import '@shared/container';
 import upload from '@config/upload';
 import AppError from '@shared/errors/AppError';
 import { errors } from 'celebrate';
+import swaggerFile from '../../../../swagger.json';
 import routes from './routes';
 
 const app = express();
 app.use(cors({ credentials: true, origin: true }));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 Sentry.init({
   dsn:
