@@ -13,8 +13,6 @@ class ImportCategoryUseCase {
 
   loadCategories(file: Express.Multer.File): Promise<IImportCategory[]> {
     return new Promise((resolve, reject) => {
-      console.log(file);
-
       const categories: IImportCategory[] = [];
 
       const stream = fs.createReadStream(file.path);
@@ -32,6 +30,7 @@ class ImportCategoryUseCase {
           });
         })
         .on('end', () => {
+          fs.promises.unlink(file.path);
           resolve(categories);
         })
         .on('error', err => {
