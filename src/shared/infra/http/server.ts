@@ -14,7 +14,7 @@ import '@shared/container';
 import upload from '@config/upload';
 import AppError from '@shared/errors/AppError';
 import { errors } from 'celebrate';
-import swaggerFile from '../../../../swagger.json';
+import swaggerFile from '../../swagger.json';
 import routes from './routes';
 
 const app = express();
