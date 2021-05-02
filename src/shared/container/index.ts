@@ -1,32 +1,9 @@
-// import '@modules/users/providers/index';
-import './providers';
-// import AppointmentsRepository from '@modules/Appointmensts/infra/typeorm/repositories/AppointmentsRepository';
-// import IAppointmentsRepository from '@modules/Appointmensts/repositories/IAppointmentsRepository';
-// import UserRepository from '@modules/users/infra/typeorm/repositories/UserRepository';
-// import IUserRepository from '@modules/users/repositories/IUserRepository';
-// import { container } from 'tsyringe';
-// import IUserTokenRepository from '@modules/users/repositories/IUserTokenRepository';
-// import UserTokenRepository from '@modules/users/infra/typeorm/repositories/UserTokenRepository';
-// import INotificationRepository from '@modules/Notifications/repositories/INotificationRepository';
-// import NotificationRepository from '@modules/Notifications/infra/typeorm/repositories/NotificationRepository';
-
-// container.registerSingleton<INotificationRepository>(
-//   'NotificationRepository',
-//   NotificationRepository,
-// );
-// container.registerSingleton<IAppointmentsRepository>(
-//   'AppointmentsRepository',
-//   AppointmentsRepository,
-// );
-// container.registerSingleton<IUserRepository>('UserRepository', UserRepository);
-// container.registerSingleton<IUserTokenRepository>(
-//   'UserTokenRepository',
-//   UserTokenRepository,
-// );
+import { CategoriesRepository } from '@modules/cars/repositories/implementations/CategoriesRepository';
 import { container } from 'tsyringe';
-import { ICategoriesRepository } from '../../modules/cars/repositories/ICategoriesRepository';
-import { CategoriesRepository } from '../../modules/cars/repositories/implementations/CategoriesRepository';
 
+import { ICategoriesRepository } from '../../modules/cars/repositories/ICategoriesRepository';
+
+// ICategoriesRepository
 container.registerSingleton<ICategoriesRepository>(
   'CategoriesRepository',
   CategoriesRepository,
