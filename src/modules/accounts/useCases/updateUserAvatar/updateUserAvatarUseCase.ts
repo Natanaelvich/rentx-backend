@@ -1,3 +1,4 @@
+import upload from '@config/upload';
 import AppError from '@shared/errors/AppError';
 import { deleteFile } from '@shared/utils/file';
 import { inject, injectable } from 'tsyringe';
@@ -24,7 +25,7 @@ class UpdateUserAvatarUseCase {
     }
 
     if (user.avatar) {
-      await deleteFile(`./tmp/avatar/${user.avatar}`);
+      await deleteFile(`${upload.tmpFolfer}/${user.avatar}`);
     }
 
     user.avatar = avatar_file;
