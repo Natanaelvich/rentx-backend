@@ -1,3 +1,4 @@
+import { Car } from '@modules/cars/entities/Car';
 import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository';
 import AppError from '@shared/errors/AppError';
 
@@ -26,7 +27,7 @@ class CreateCarUseCase {
     fine_amount,
     brand,
     category_id,
-  }: IRequest): Promise<void> {
+  }: IRequest): Promise<Car> {
     const carAlreadyExists = await this.carsRepository.findByLicensePlate(
       license_plate,
     );
@@ -35,7 +36,7 @@ class CreateCarUseCase {
       throw new AppError('Car already exists');
     }
 
-    await this.carsRepository.create({
+    const car = await this.carsRepository.create({
       name,
       description,
       daily_rate,
@@ -44,6 +45,8 @@ class CreateCarUseCase {
       brand,
       category_id,
     });
+
+    return car;
   }
 }
 
