@@ -8,7 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 
-import '@shared/infra/typeorm';
+import createConnection from '@shared/infra/typeorm';
 import '@shared/container';
 
 import upload from '@config/upload';
@@ -16,6 +16,8 @@ import { errors } from 'celebrate';
 import swaggerFile from '../../swagger.json';
 import routes from './routes';
 import { handlingErrors } from '../middlewares/handlingErrors';
+
+createConnection();
 
 const app = express();
 app.use(cors({ credentials: true, origin: true }));
