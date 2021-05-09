@@ -9,7 +9,8 @@
     "typeorm": "tsnd -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "test": "jest",
     "start": "node dist/shared/infra/http/server.js",
-    "migrate": "./node_modules/.bin/typeorm migration:run"
+    "migrate": "./node_modules/.bin/typeorm migration:run",
+    "seed:admin": "ts-node-dev src/shared/infra/typeorm/seeds/admin.ts"
   },
   "dependencies": {
     "@sentry/node": "^5.25.0",
