@@ -7,7 +7,7 @@ interface IRequest {
   name?: string;
 }
 
-class ListCarsUseCase {
+class ListAvailableCarsUseCase {
   constructor(private carsRepository: ICarsRepository) {}
 
   async execute({ category_id, brand, name }: IRequest): Promise<Car[]> {
@@ -20,4 +20,4 @@ class ListCarsUseCase {
   }
 }
 
-export { ListCarsUseCase };
+export { ListAvailableCarsUseCase };
