@@ -1,8 +1,8 @@
 import { CarsRepositoryInMemory } from '@modules/cars/repositories/in-memory/CarsRepositoryInMemory';
 
-import { ListCarsUseCase } from './ListCarsUseCase';
+import { ListAvailableCarsUseCase } from './ListAvailableCarsUseCase';
 
-let listCarsUseCase: ListCarsUseCase;
+let listAvailableCarsUseCase: ListAvailableCarsUseCase;
 let carsRepository: CarsRepositoryInMemory;
 
 const mockCar = {
@@ -18,13 +18,13 @@ const mockCar = {
 describe('List Cars', () => {
   beforeEach(() => {
     carsRepository = new CarsRepositoryInMemory();
-    listCarsUseCase = new ListCarsUseCase(carsRepository);
+    listAvailableCarsUseCase = new ListAvailableCarsUseCase(carsRepository);
   });
 
   it('Should be able to list all available cars', async () => {
     const createdCar = await carsRepository.create(mockCar);
 
-    const cars = await listCarsUseCase.execute({});
+    const cars = await listAvailableCarsUseCase.execute({});
 
     expect(cars).toStrictEqual([createdCar]);
   });
@@ -36,7 +36,9 @@ describe('List Cars', () => {
       name: 'another name',
     });
 
-    const cars = await listCarsUseCase.execute({ name: createdCar.name });
+    const cars = await listAvailableCarsUseCase.execute({
+      name: createdCar.name,
+    });
     expect(cars).toHaveLength(1);
   });
 
@@ -47,7 +49,9 @@ describe('List Cars', () => {
       brand: 'another brand',
     });
 
-    const cars = await listCarsUseCase.execute({ brand: createdCar.brand });
+    const cars = await listAvailableCarsUseCase.execute({
+      brand: createdCar.brand,
+    });
     expect(cars).toHaveLength(1);
   });
 
@@ -58,7 +62,7 @@ describe('List Cars', () => {
       category_id: '54321',
     });
 
-    const cars = await listCarsUseCase.execute({
+    const cars = await listAvailableCarsUseCase.execute({
       category_id: createdCar.category_id,
     });
     expect(cars).toHaveLength(1);
