@@ -1,13 +1,11 @@
-import { createConnection, getConnectionOptions } from 'typeorm';
+import { Connection, createConnection, getConnectionOptions } from 'typeorm';
 
-interface IOptions {
-  host: string;
-}
+export default async (host = 'mysql'): Promise<Connection> => {
+  const defaultOptions = await getConnectionOptions();
 
-getConnectionOptions().then(options => {
-  const newOptions = options as IOptions;
-  newOptions.host = 'mysql'; // Essa opção deverá ser EXATAMENTE o nome dado ao service do banco de dados
-  createConnection({ ...options })
-    .then(() => console.log('connection database mysql 🎉'))
-    .catch(err => console.log('connection database mysql fail ', err));
-});
+  return createConnection(
+    Object.assign(defaultOptions, {
+      host,
+    }),
+  );
+};
