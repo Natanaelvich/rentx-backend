@@ -13,14 +13,14 @@ export class CreateSpecificationsCars1617706279572
         name: 'specifications_cars',
         columns: [
           {
-            name: 'id',
+            name: 'car_id',
             type: 'varchar',
-            isPrimary: true,
-            generationStrategy: 'uuid',
+            isNullable: true,
           },
           {
             name: 'specification_id',
-            type: 'uuid',
+            type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'created_at',
