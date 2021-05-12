@@ -15,6 +15,7 @@ export class CreateCarsImages1617716685233 implements MigrationInterface {
           {
             name: 'car_id',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'image_name',
