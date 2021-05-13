@@ -7,6 +7,7 @@ import { Rental } from '@modules/rentals/entities/Rental';
 import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository';
 import AppError from '@shared/errors/AppError';
 import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProvider';
+import { inject, injectable } from 'tsyringe';
 
 dayjs.extend(utc);
 
@@ -15,12 +16,19 @@ interface IRequest {
   car_id: string;
   expected_return_date: Date;
 }
-
+@injectable()
 class CreateRentalUseCase {
   constructor(
+    @inject('RentalsRepository')
     private rentalsRepository: IRentalsRepository,
+
+    @inject('CarsRepository')
     private carsRepository: ICarsRepository,
+
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('DayjsDateProvider')
     private dateProvider: IDateProvider,
   ) {}
 
