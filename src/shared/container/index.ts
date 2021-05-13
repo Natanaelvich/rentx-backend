@@ -1,3 +1,5 @@
+import './providers';
+
 import { UsersRepository } from '@modules/accounts/repositories/implementations/UsersRepository';
 import { IUsersRepository } from '@modules/accounts/repositories/IUsersRepository';
 import { ICarsImagesRepository } from '@modules/cars/repositories/ICarsImagesRepository';
@@ -12,7 +14,6 @@ import { RentalsRepository } from '@modules/rentals/repositories/implementations
 import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository';
 import { container } from 'tsyringe';
 
-// ICategoriesRepository
 container.registerSingleton<ICategoriesRepository>(
   'CategoriesRepository',
   CategoriesRepository,
