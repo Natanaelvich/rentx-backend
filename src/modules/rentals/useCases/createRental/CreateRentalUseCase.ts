@@ -6,6 +6,7 @@ import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository';
 import { Rental } from '@modules/rentals/entities/Rental';
 import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository';
 import AppError from '@shared/errors/AppError';
+import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProvider';
 
 dayjs.extend(utc);
 
@@ -20,6 +21,7 @@ class CreateRentalUseCase {
     private rentalsRepository: IRentalsRepository,
     private carsRepository: ICarsRepository,
     private usersRepository: IUsersRepository,
+    private dateProvider: IDateProvider,
   ) {}
 
   async execute({
@@ -51,12 +53,10 @@ class CreateRentalUseCase {
       throw new AppError("There's a rental is progress for user");
     }
 
-    const expectedReturnDateUTC = dayjs(expected_return_date)
-      .utc()
-      .local()
-      .format();
-    const dateNowUTC = dayjs().utc().local().format();
-    const compare = dayjs(expectedReturnDateUTC).diff(dateNowUTC, 'hours');
+    const compare = this.dateProvider.compareInHours(
+      this.dateProvider.dateNow(),
+      expected_return_date,
+    );
     const rentalMinDurationHours = 24;
 
     if (compare < rentalMinDurationHours) {
