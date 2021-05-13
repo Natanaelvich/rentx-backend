@@ -38,6 +38,7 @@
     "nodemailer": "^6.4.11",
     "rate-limiter-flexible": "^2.1.10",
     "redis": "^3.0.2",
+    "cross-env": "^7.0.3",
     "reflect-metadata": "^0.1.13",
     "swagger-ui-express": "^4.1.6",
     "tsyringe": "^4.3.0",
