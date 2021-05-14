@@ -1,9 +1,12 @@
+import { Car } from '@modules/cars/entities/Car';
 import {
   Column,
   CreateDateColumn,
   Entity,
   PrimaryColumn,
   UpdateDateColumn,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -11,9 +14,6 @@ import { v4 as uuidV4 } from 'uuid';
 class Rental {
   @PrimaryColumn()
   id: string;
-
-  @Column()
-  car_id: string;
 
   @Column()
   user_id: string;
@@ -35,6 +35,10 @@ class Rental {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @ManyToOne(() => Car)
+  @JoinColumn({ name: 'car_id' })
+  car: Car;
 
   constructor() {
     if (!this.id) {
