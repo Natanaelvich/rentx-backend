@@ -17,12 +17,12 @@ describe('Create Category Controller', () => {
     const password = await hash('admin', 10);
 
     await connection.query(`
-      INSERT INTO USERS(
+      INSERT INTO users(
         id, name, email, password,
-        "isAdmin", driver_license, created_at
+        isAdmin, driver_license, created_at
       ) values (
         '${id}', 'admin', 'admin@rentx.com.br', '${password}',
-        true, 'license-admin', 'now()'
+        true, 'license-admin', now()
       )
     `);
   });
@@ -50,7 +50,7 @@ describe('Create Category Controller', () => {
         Authorization: `Bearer ${token}`,
       });
 
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(200);
   });
 
   it('Should not be able to create a Category with exactly name as before', async () => {
