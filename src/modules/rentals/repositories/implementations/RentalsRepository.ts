@@ -45,6 +45,10 @@ class RentalsRepository implements IRentalsRepository {
   async findById(user_id: string): Promise<Rental | undefined> {
     return this.repository.findOne({ where: { user_id, end_date: null } });
   }
+
+  async findByUserId(user_id: string): Promise<Rental[]> {
+    return this.repository.find({ user_id });
+  }
 }
 
 export { RentalsRepository };
