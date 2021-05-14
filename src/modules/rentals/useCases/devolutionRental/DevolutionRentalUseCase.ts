@@ -1,4 +1,4 @@
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 
 import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository';
 import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository';
@@ -10,7 +10,7 @@ interface IRequest {
   id: string;
   user_id: string;
 }
-
+@injectable()
 class DevolutionRentalUseCase {
   constructor(
     @inject('RentalsRepository')
@@ -51,7 +51,7 @@ class DevolutionRentalUseCase {
       total += totalFineAmount;
     }
 
-    total += daily + car.daily_rate;
+    total += daily * car.daily_rate;
 
     rental.end_date = dateNow;
     rental.total = total;
