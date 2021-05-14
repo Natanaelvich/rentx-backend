@@ -4,7 +4,7 @@ services:
   mysql:
     image: mysql
     container_name: mysql-rentx
-    restart: always
+    restart: unless-stopped
     ports:
       - 3306:3306
     command: ["mysqld", "--default-authentication-plugin=mysql_native_password"]
@@ -19,7 +19,7 @@ services:
   app:
     build: .
     container_name: rentx
-    restart: always
+    restart: unless-stopped
     ports:
       - 3333:3333
     volumes:
