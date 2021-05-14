@@ -1,6 +1,6 @@
 import upload from '@config/upload';
 import aws, { S3 } from 'aws-sdk';
-import mime from 'mime';
+import mime from 'mime-types';
 import fs from 'fs';
 import path from 'path';
 import IStorageProvider from '../models/IStorageProvider';
@@ -17,7 +17,7 @@ export default class S3storageProvider implements IStorageProvider {
   public async saveFile(file: string): Promise<string> {
     const originalPath = path.resolve(upload.tmpFolfer, file);
 
-    const ContentType = mime.getType(originalPath);
+    const ContentType = mime.contentType(path.extname(originalPath));
 
     if (!ContentType) {
       throw new Error('File not found');
