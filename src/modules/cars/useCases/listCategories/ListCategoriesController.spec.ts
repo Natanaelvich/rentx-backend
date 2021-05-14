@@ -17,13 +17,13 @@ describe('List Category Controller', () => {
     const password = await hash('admin', 10);
 
     await connection.query(`
-      INSERT INTO USERS(
-        id, name, email, password,
-        "isAdmin", driver_license, created_at
+    INSERT INTO users(
+      id, name, email, password,
+      isAdmin, driver_license, created_at
       ) values (
         '${id}', 'admin', 'admin@rentx.com.br', '${password}',
-        true, 'license-admin', 'now()'
-      )
+        true, 'license-admin', now()
+        )
     `);
   });
 
