@@ -162,68 +162,83 @@
           "400": {
             "description": "Email or password incorrect"
           }
-
         }
 
-
-
-
       }
-
     },
-
     "/cars":{
-
       "post": {
-
         "tags": ["Cars"],
-
         "summary": "Create a new car",
-
         "description": "Create a new car",
-
         "security": [
-
           { "bearerAuth": [] }
-
         ],
-
         "requestBody": {
-
           "content": {
-
             "application/json": {
-
               "schema": {
-
                 "$ref": "#/definitions/car"
-
               }
-
             }
-
           }
-
         },
-
         "responses": {
-
           "201":{
-
             "description": "Created"
-
           },
-
           "400":{"description": "Car already exists"}
-
         }
-
       }
-
+    },
+    "/cars/images/{id}":{
+      "post":{
+        "tags":["Cars"],
+        "summary": "Upload images for a car",
+        "description": "Upload one or mor images for a car",
+        "security":[
+          { "bearerAuth": []}
+        ],
+        "parameters":[
+          {
+            "name":"id",
+            "in": "path",
+            "description": "Id of a valid car",
+            "required": true,
+            "schema": {
+              "type":"string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties":{
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Can not upload images"
+          }
+        }
+      }
     }
-
   },
-
   "definitions": {
     "specification": {
       "type": "object",
@@ -232,69 +247,37 @@
           "type": "string"
         },
         "description":{
-
           "type": "string"
-
         }
-
       }
-
     },
-
     "car": {
-
       "type":"object",
-
       "properties": {
-
         "name": {
-
           "type": "string"
-
         },
-
         "description": {
-
           "type": "string"
-
         },
-
         "daily_rate": {
-
           "type": "number"
-
         },
-
         "license_plate": {
-
           "type": "string"
-
         },
-
         "fine_amount": {
-
           "type": "number"
-
         },
-
         "brand": {
-
           "type": "string"
-
         },
-
         "category_id": {
-
           "type": "string"
-
         }
-
       }
-
     }
-
   },
-
   "components": {
     "securitySchemes": {
       "bearerAuth": {
