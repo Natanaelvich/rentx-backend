@@ -1,3 +1,6 @@
+import auth from '@config/auth';
+import { IUsersTokensRepository } from '@modules/accounts/repositories/IUsersTokensRepository';
+import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProvider';
 import AppError from '@shared/errors/AppError';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
@@ -16,6 +19,7 @@ interface IResponse {
     email: string;
   };
   token: string;
+  refresh_token: string;
 }
 
 @injectable()
@@ -23,9 +27,22 @@ class AuthenticateUserUseCase {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+    @inject('UsersTokensRepository')
+    private usersTokensRepository: IUsersTokensRepository,
+
+    @inject('DayjsDateProvider')
+    private dateProvider: IDateProvider,
   ) {}
 
   async execute({ email, password }: IRequest): Promise<IResponse> {
+    const {
+      exp,
+      expires_in_refresh_token,
+      secret_refresh_token,
+      secret,
+      expires_refresh_token_days,
+    } = auth.jwt;
+
     const user = await this.usersRepository.findByEmail(email);
     if (!user) {
       throw new AppError('Email or password incorrect');
@@ -36,9 +53,25 @@ class AuthenticateUserUseCase {
       throw new AppError('Email or password incorrect');
     }
 
-    const token = sign({}, 'd3acee670ad999360c2b5315b8f5b71c', {
+    const token = sign({}, secret, {
       subject: user.id,
-      expiresIn: '1d',
+      expiresIn: exp,
+    });
+
+    const refresh_token = sign({ email }, secret_refresh_token, {
+      subject: user.id,
+      expiresIn: expires_in_refresh_token,
+    });
+
+    const refresh_token_expires_date = this.dateProvider.addDays(
+      expires_refresh_token_days,
+      null,
+    );
+
+    await this.usersTokensRepository.create({
+      user_id: user.id,
+      refresh_token,
+      expires_date: refresh_token_expires_date,
     });
 
     return {
@@ -47,6 +80,7 @@ class AuthenticateUserUseCase {
         name: user.name,
       },
       token,
+      refresh_token,
     };
   }
 }
