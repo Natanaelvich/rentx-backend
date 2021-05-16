@@ -6,9 +6,14 @@ export class CreateUsersToken1618353512972 implements MigrationInterface {
       new Table({
         name: 'users_tokens',
         columns: [
-          { name: 'id', type: 'uuid', isPrimary: true },
+          {
+            name: 'id',
+            type: 'varchar',
+            isPrimary: true,
+            generationStrategy: 'uuid',
+          },
           { name: 'refresh_token', type: 'varchar' },
-          { name: 'user_id', type: 'uuid' },
+          { name: 'user_id', type: 'varchar' },
           { name: 'expires_date', type: 'timestamp' },
           { name: 'created_at', type: 'timestamp', default: 'now()' },
         ],
