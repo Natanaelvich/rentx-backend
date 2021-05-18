@@ -8,6 +8,8 @@ import { app } from '@shared/infra/http/app';
 
 let connection: Connection;
 
+const jestTimeoutInMS = 50 * 1000;
+
 describe('Create Category Controller', () => {
   beforeAll(async () => {
     connection = await createConnection();
@@ -32,45 +34,53 @@ describe('Create Category Controller', () => {
     await connection.close();
   });
 
-  it('Should be able to create a Category', async () => {
-    const responseToken = await request(app).post('/sessions').send({
-      email: 'admin@rentx.com.br',
-      password: 'admin',
-    });
-
-    const { token } = responseToken.body;
-
-    const response = await request(app)
-      .post('/categories')
-      .send({
-        name: 'Category Supertest',
-        description: 'Category Supertest',
-      })
-      .set({
-        Authorization: `Bearer ${token}`,
+  it(
+    'Should be able to create a Category',
+    async () => {
+      const responseToken = await request(app).post('/sessions').send({
+        email: 'admin@rentx.com.br',
+        password: 'admin',
       });
 
-    expect(response.status).toBe(200);
-  });
+      const { token } = responseToken.body;
 
-  it('Should not be able to create a Category with exactly name as before', async () => {
-    const responseToken = await request(app).post('/sessions').send({
-      email: 'admin@rentx.com.br',
-      password: 'admin',
-    });
+      const response = await request(app)
+        .post('/categories')
+        .send({
+          name: 'Category Supertest',
+          description: 'Category Supertest',
+        })
+        .set({
+          Authorization: `Bearer ${token}`,
+        });
 
-    const { token } = responseToken.body;
+      expect(response.status).toBe(200);
+    },
+    jestTimeoutInMS,
+  );
 
-    const response = await request(app)
-      .post('/categories')
-      .send({
-        name: 'Category Supertest',
-        description: 'Category Supertest',
-      })
-      .set({
-        Authorization: `Bearer ${token}`,
+  it(
+    'Should not be able to create a Category with exactly name as before',
+    async () => {
+      const responseToken = await request(app).post('/sessions').send({
+        email: 'admin@rentx.com.br',
+        password: 'admin',
       });
 
-    expect(response.status).toBe(400);
-  });
+      const { token } = responseToken.body;
+
+      const response = await request(app)
+        .post('/categories')
+        .send({
+          name: 'Category Supertest',
+          description: 'Category Supertest',
+        })
+        .set({
+          Authorization: `Bearer ${token}`,
+        });
+
+      expect(response.status).toBe(400);
+    },
+    jestTimeoutInMS,
+  );
 });
