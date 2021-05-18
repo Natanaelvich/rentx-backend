@@ -40,6 +40,9 @@ class Rental {
   @JoinColumn({ name: 'car_id' })
   car: Car;
 
+  @Column()
+  car_id: string;
+
   constructor() {
     if (!this.id) {
       this.id = uuidV4();
