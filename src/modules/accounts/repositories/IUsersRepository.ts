@@ -5,6 +5,7 @@ interface IUsersRepository {
   create(data: ICreateUserDTO): Promise<User>;
   findByEmail(email: string): Promise<User | undefined>;
   findById(id: string): Promise<User | undefined>;
+  getAll(): Promise<User[]>;
 }
 
 export { IUsersRepository };
