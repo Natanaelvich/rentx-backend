@@ -8,6 +8,7 @@ interface IUsersTokensRepository {
     refresh_token: string,
   ): Promise<UsersTokens | undefined>;
   deleteById(id: string): Promise<void>;
+  findByRefreshToken(token: string): Promise<UsersTokens | undefined>;
 }
 
 export { IUsersTokensRepository };
