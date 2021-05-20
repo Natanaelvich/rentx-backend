@@ -1,59 +1,50 @@
-/* eslint-disable no-console */
+import fs from 'fs';
+import handlebars from 'handlebars';
 import nodemailer, { Transporter } from 'nodemailer';
-import { inject, injectable } from 'tsyringe';
-import ITemplateMailProvider from '../../TemplateMailProvider/models/ITemplateMailProvider';
+import { injectable } from 'tsyringe';
 import ISendMailDTO from '../dtos/ISendMailDTO';
 import IMailProvider from '../models/IMailProvider';
 
 @injectable()
-export default class EtherealMailProvider implements IMailProvider {
+class EtherealMailProvider implements IMailProvider {
   private client: Transporter;
 
-  constructor(
-    @inject('TemplateMailProvider')
-    private templateMailProvider: ITemplateMailProvider,
-  ) {
-    nodemailer.createTestAccount().then(account => {
-      const transporter = nodemailer.createTransport({
-        host: account.smtp.host,
-        port: account.smtp.port,
-        secure: account.smtp.secure,
-        auth: {
-          user: account.user,
-          pass: account.pass,
-        },
-      });
-
-      this.client = transporter;
-    });
+  constructor() {
+    nodemailer
+      .createTestAccount()
+      .then(account => {
+        const transporter = nodemailer.createTransport({
+          host: account.smtp.host,
+          port: account.smtp.port,
+          secure: account.smtp.secure,
+          auth: {
+            user: account.user,
+            pass: account.pass,
+          },
+        });
+        this.client = transporter;
+      })
+      .catch(err => console.error(err));
   }
 
-  public async sendMail({
-    subject,
-    templateData,
+  async sendMail({
     to,
-    from,
+    subject,
+    variables,
+    path,
   }: ISendMailDTO): Promise<void> {
-    const responseMessage = await this.client.sendMail({
-      from: {
-        name: from?.name || '[Equipe] Rentx',
-        address: from?.email || 'natanaelima@mundotech.dev',
-      },
-      to: {
-        name: to.name,
-        address: to.email,
-      },
-      subject,
-      text: templateData,
-      html: templateData,
-      // html: await this.templateMailProvider.parse(templateData),
-    });
+    const templateFileContent = fs.readFileSync(path).toString('utf-8');
+    const templateParse = handlebars.compile(templateFileContent);
+    const templateHtml = templateParse(variables);
 
-    console.log('Message sent: %s', responseMessage.messageId);
-    // Preview only available when sending through an Ethereal account
-    console.log(
-      'Preview URL: %s',
-      nodemailer.getTestMessageUrl(responseMessage),
-    );
+    const message = await this.client.sendMail({
+      to,
+      from: 'Rentx <noreply@rentx.com.br',
+      subject,
+      html: templateHtml,
+    });
+    console.log('Message sent: %s', message.messageId);
+    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message));
   }
 }
+export { EtherealMailProvider };
