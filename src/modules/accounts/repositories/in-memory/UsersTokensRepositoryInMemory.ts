@@ -13,6 +13,12 @@ class UsersTokensRepositoryInMemory implements IUsersTokensRepository {
     return userToken;
   }
 
+  async findByRefreshToken(token: string): Promise<UsersTokens | undefined> {
+    return this.usersTokens.find(
+      userToken => userToken.refresh_token === token,
+    );
+  }
+
   async findByUserIdAndRefreshToken(
     user_id: string,
     refresh_token: string,
