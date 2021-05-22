@@ -1,3 +1,4 @@
+import { classToClass } from 'class-transformer';
 import { IUserResponseDTO } from '../dtos/IUserResponseDTO';
 import { User } from '../entities/User';
 
@@ -8,14 +9,18 @@ class UserMap {
     id,
     avatar,
     driver_license,
+    avatar_url,
   }: User): IUserResponseDTO {
-    return {
+    const user = classToClass({
       email,
       name,
       id,
       avatar,
       driver_license,
-    };
+      avatar_url,
+    });
+
+    return user;
   }
 }
 
