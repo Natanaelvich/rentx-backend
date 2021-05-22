@@ -1,3 +1,4 @@
+import upload from '@config/upload';
 import { Expose } from 'class-transformer';
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 import { v4 as uuidV4 } from 'uuid';
@@ -29,12 +30,12 @@ class User {
   created_at: Date;
 
   @Expose({ name: 'avatar_url' })
-  getAvatarUrl(): string | null {
-    switch (process.env.STORAGE_TYPE) {
-      case 'local':
-        return `${process.env.APP_API_URL}/avatar/${this.avatar}`;
+  avatar_url(): string | null {
+    switch (process.env.STORAGE_DRIVER) {
+      case 'disk':
+        return `${process.env.APP_API_URL}/files/${this.avatar}`;
       case 's3':
-        return `${process.env.AWS_BUCKET_URL}/avatar/${this.avatar}`;
+        return `https://${upload.config.aws.bucket}.s3.amazonaws.com/${this.avatar}`;
       default:
         return null;
     }
