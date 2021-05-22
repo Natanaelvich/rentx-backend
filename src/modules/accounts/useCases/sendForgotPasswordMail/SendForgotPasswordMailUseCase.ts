@@ -49,7 +49,7 @@ class SendForgotPasswordMailUseCase {
 
     const templateVariables = {
       name: user.name,
-      link: `${process.env.FORGOT_MAIL_URL}${token}`,
+      link: `${process.env.APP_WEB_URL}/reset_password/${token}`,
     };
 
     await this.mailProvider.sendMail({
