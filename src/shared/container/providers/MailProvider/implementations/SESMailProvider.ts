@@ -2,6 +2,8 @@
 import nodemailer, { Transporter } from 'nodemailer';
 import aws from 'aws-sdk';
 import { inject, injectable } from 'tsyringe';
+import fs from 'fs';
+import handlebars from 'handlebars';
 
 import mailConfig from '@config/mail';
 import ITemplateMailProvider from '../../TemplateMailProvider/models/ITemplateMailProvider';
@@ -26,23 +28,36 @@ export default class SESMailProvider implements IMailProvider {
 
   public async sendMail({
     subject,
-    templateData,
+    variables,
     to,
-    from,
+    path,
   }: ISendMailDTO): Promise<void> {
     const { email, name } = mailConfig.defaults.from;
 
+    const templateFileContent = fs.readFileSync(path).toString('utf-8');
+    const templateParse = handlebars.compile(templateFileContent);
+    const templateHtml = templateParse(variables);
+
+    // await this.client.sendMail({
+    //   from: {
+    //     name: from?.name || name,
+    //     address: from?.email || email,
+    //   },
+    //   to: {
+    //     name: to.name,
+    //     address: to.email,
+    //   },
+    //   subject,
+    //   html: await this.templateMailProvider.parse(templateData),
+    // });
     await this.client.sendMail({
+      to,
       from: {
-        name: from?.name || name,
-        address: from?.email || email,
-      },
-      to: {
-        name: to.name,
-        address: to.email,
+        name,
+        address: email,
       },
       subject,
-      html: await this.templateMailProvider.parse(templateData),
+      html: templateHtml,
     });
   }
 }
