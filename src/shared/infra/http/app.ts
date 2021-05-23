@@ -14,6 +14,7 @@ import '@shared/container';
 
 import upload from '@config/upload';
 import { errors } from 'celebrate';
+import rateLimiter from '../middlewares/rateLimit';
 import swaggerFile from '../../swagger.json';
 import routes from './routes';
 import { handlingErrors } from '../middlewares/handlingErrors';
@@ -56,6 +57,7 @@ Sentry.init({
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 
+app.use(rateLimiter);
 app.use(express.json());
 app.use('/files', express.static(upload.uploadsFolder));
 app.use(routes);
