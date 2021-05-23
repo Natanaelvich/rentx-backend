@@ -5,21 +5,13 @@
     "host": "localhost",
     "port": 3306,
     "username": "root",
-    "password": "12345",
+    "password": "root",
     "database": "rentx",
-    "entities": ["./src/modules/**/infra/typeorm/entities/*.ts"],
+    "entities": ["./src/modules/**/entities/*.ts"],
     "migrations": ["./src/shared/infra/typeorm/migrations/*.ts"],
     "cli": {
       "migrationsDir": "./src/shared/infra/typeorm/migrations"
-    }
-  },
-  {
-    "name": "mongo",
-    "type": "mongodb",
-    "host": "localhost",
-    "port": 27017,
-    "database": "rentx",
-    "useUnifiedTopology": true,
-    "entities": ["./src/modules/**/infra/typeorm/schemas/*.ts"]
+    },
+    "logging": false
   }
 ]
