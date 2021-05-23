@@ -2,6 +2,7 @@ import auth from '@config/auth';
 import AppError from '@shared/errors/AppError';
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
+import * as Sentry from '@sentry/node';
 
 interface IPayload {
   sub: string;
@@ -19,6 +20,9 @@ export async function ensureAuthenticated(
   const [, token] = authHeader.split(' ');
   try {
     const { sub: user_id } = verify(token, auth.jwt.secret) as IPayload;
+
+    // set user to sentry
+    Sentry.setUser({ id: user_id });
 
     request.user = {
       id: user_id,
