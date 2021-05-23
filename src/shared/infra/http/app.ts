@@ -46,23 +46,38 @@ app.get('/api-coverage', (request: Request, response: Response) => {
 });
 
 Sentry.init({
-  dsn:
-    'https://229a70a4905c4a8e882c267a2f0374a7@o351938.ingest.sentry.io/5459704',
+  dsn: process.env.SENTRY_DNS,
   integrations: [
     new Sentry.Integrations.Http({ tracing: true }),
     new Tracing.Integrations.Express({ app }),
   ],
   tracesSampleRate: 1.0,
 });
-app.use(Sentry.Handlers.requestHandler());
-app.use(Sentry.Handlers.tracingHandler());
 
 app.use(rateLimiter);
 app.use(express.json());
+
+app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
+
 app.use('/files', express.static(upload.uploadsFolder));
 app.use(routes);
 
-app.use(Sentry.Handlers.errorHandler());
+app.use(
+  Sentry.Handlers.errorHandler({
+    shouldHandleError(error) {
+      if (
+        error.statusCode === 429 ||
+        error.statusCode === 500 ||
+        !error.statusCode
+      ) {
+        return true;
+      }
+      return false;
+    },
+  }),
+);
+
 app.use(errors());
 
 app.use(handlingErrors);
